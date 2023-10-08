@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import ProductController from "../controller/ProductController";
 
 const productRoutes = Router();
@@ -19,9 +19,6 @@ productRoutes.get("/stocks-products", ProductController.getStocksProducts());
 productRoutes.get("/new-products", ProductController.getNewProducts());
 productRoutes.post("/create-product", ProductController.onCreateProduct());
 productRoutes.put("/edit-product/:id", ProductController.onEditProduct());
-productRoutes.delete(
-  "/delete-product/:id",
-  ProductController.onDeleteProduct()
-);
+productRoutes.delete("/delete-product/:id", ProductController.deleteProduct);
 
 export default productRoutes;

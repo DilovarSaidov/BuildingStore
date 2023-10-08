@@ -83,11 +83,11 @@ export class ProductModel {
     );
     return result.rows;
   }
-  static async deleteProduct(req: any) {
-    const { id } = req.params;
-    await db.query("DELETE FROM products WHERE id = $1", [id]);
-    return { message: "Продукт успешно удалено" };
+  static async DeleteProduct(id: number) {
+    const result = await db.query("DELETE FROM product WHERE id = $1", [id]);
+    return result.rowCount;
   }
+
   static async editProduct(req: any) {
     const { id } = req.params;
     const { name, img, price, inStock, detailed, isNew, categories } = req.body;

@@ -1,6 +1,4 @@
-import { error } from "console";
 import { Request, Response } from "express";
-import { IProduct } from "../../../client/src/types/Model";
 import { ProductModel } from "../models/ProductModel";
 
 export default class ProductController {
@@ -131,7 +129,7 @@ export default class ProductController {
     return async (req: any, res: Response) => {
       try {
         if (!req.body) {
-          throw new Error("No message Information");
+          throw new Error("No product Information");
         } else {
           const result = await ProductModel.createProduct(req);
           return res.send(result);
@@ -153,15 +151,19 @@ export default class ProductController {
       }
     };
   }
-  static onDeleteProduct() {
-    return async (req: any, res: Response) => {
-      try {
-        await ProductModel.deleteProduct(req);
-        res.json({ message: "Сообщение успешно удалено" });
-      } catch (error) {
-        console.error("Ошибка при выполнении запроса:", error);
-        res.status(500).json({ error: "Внутренняя ошибка сервера" });
+  static async deleteProduct(req: any, res: Response) {
+    const { id } = req.query;
+    try {
+      const RowCount = await ProductModel.DeleteProduct(id);
+
+      if (RowCount === 0) {
+        return res.status(404).json("Committee not found");
       }
-    };
+
+      return res.status(200).json("Committee deleted successfully");
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json("Failed to delete committee");
+    }
   }
 }
